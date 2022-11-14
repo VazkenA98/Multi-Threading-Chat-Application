@@ -2,7 +2,6 @@ package com.view;
 
 
 import com.server.ApplicationProperties;
-import com.server.ServerCommands;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,46 +11,6 @@ import java.util.List;
 
 public class RoomPanel extends JPanel {
 
-    public RoomPanel() {
-        initComponents();
-    }
-
-    public JLabel getLbRoom1() {
-        return lbRoom1;
-    }
-
-    public JLabel getLbRoom2() {
-        return lbRoom2;
-    }
-
-    public JLabel getLbRoom3() {
-        return lbRoom3;
-    }
-
-    public JLabel getLbRoom4() {
-        return lbRoom4;
-    }
-
-    public JLabel getLbRoom5() {
-        return lbRoom5;
-    }
-
-    public JLabel getLbRoom6() {
-        return lbRoom6;
-    }
-
-    public JLabel getLbRoom7() {
-        return lbRoom7;
-    }
-
-    public JLabel getLbRoom8() {
-        return lbRoom8;
-    }
-
-    public JList<String> getOnlineList_rp() {
-        return onlineList_rp;
-    }
-    
     private JLabel jLabel1;
     private JLabel jLabel2;
     private JScrollPane jScrollPane1;
@@ -66,6 +25,11 @@ public class RoomPanel extends JPanel {
     private JList<String> onlineList_rp;
     private List<JLabel> customRooms =  new ArrayList<>(Arrays.asList(lbRoom5, lbRoom6, lbRoom7, lbRoom8));
 
+
+
+    public RoomPanel() {
+        initComponents();
+    }
 
     private void initComponents() {
 
@@ -117,7 +81,7 @@ public class RoomPanel extends JPanel {
         int listOrder = 0;
         for (Map.Entry<String,Boolean> entry : ApplicationProperties.getRoomsMap().entrySet()){
             customRooms.get(listOrder).setBackground(new Color(179, 177, 177, 255));
-            customRooms.get(listOrder).setFont(new Font("Arial", 0, 18)); // NOI18N
+            customRooms.get(listOrder).setFont(new Font("Arial", 0, 18));
             customRooms.get(listOrder).setHorizontalAlignment(SwingConstants.CENTER);
             customRooms.get(listOrder).setText(entry.getKey());
             customRooms.get(listOrder).setOpaque(true);
@@ -125,9 +89,6 @@ public class RoomPanel extends JPanel {
             customRooms.get(listOrder).setEnabled(entry.getValue());
             listOrder++;
         }
-
-
-
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
@@ -185,6 +146,44 @@ public class RoomPanel extends JPanel {
                                 .addContainerGap(43, Short.MAX_VALUE))
         );
     }
+
+
+    public JLabel getLbRoom1() {
+        return lbRoom1;
+    }
+
+    public JLabel getLbRoom2() {
+        return lbRoom2;
+    }
+
+    public JLabel getLbRoom3() {
+        return lbRoom3;
+    }
+
+    public JLabel getLbRoom4() {
+        return lbRoom4;
+    }
+
+    public JLabel getLbRoom5() {
+        return lbRoom5;
+    }
+
+    public JLabel getLbRoom6() {
+        return lbRoom6;
+    }
+
+    public JLabel getLbRoom7() {
+        return lbRoom7;
+    }
+
+    public JLabel getLbRoom8() {
+        return lbRoom8;
+    }
+
+    public JList<String> getOnlineList_rp() {
+        return onlineList_rp;
+    }
+
 
     public static String addRoom(String name){
         String msg = "You reached rooms size limit";

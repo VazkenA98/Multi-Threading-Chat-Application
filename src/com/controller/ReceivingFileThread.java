@@ -13,6 +13,7 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.server.ServerCommands;
 import com.view.PrivateChat;
 
 import javax.swing.*;
@@ -59,7 +60,7 @@ public class ReceivingFileThread extends Thread {
         BufferedInputStream bis = null;
         FileOutputStream fos = null;
         try {
-            this.sendToServer("CMD_DOWNLOADFILE|"+fileName);
+            this.sendToServer(ServerCommands.DOWNLOAD_FILE+"|"+fileName);
             bis = new BufferedInputStream(socketOfReceiver.getInputStream());   //lấy luồng vào là từ server
             fos = new FileOutputStream(myDownloadFolder + "\\" + fileName);   //luồng ra là tới file sẽ lưu ở ổ cứng của receiver
 

@@ -1,6 +1,8 @@
 package com.controller;
 
 
+import com.server.ServerCommands;
+
 import javax.swing.*;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -69,9 +71,7 @@ public class SendingFileThread extends Thread {
             File file = new File(filePath);     //we need to send this file to server, and then server will deliver this file to the receiver
             int leng = (int) file.length();     //ví dụ: leng = 4979 byte
 
-            this.sendToServer("CMD_SENDFILETOSERVER|"+sender+"|"+receiver+"|"+file.getName()+"|"+leng);
-
-            System.out.println("[SendingFileThread.java] CMD_SENDFILETOSERVER|"+sender+"|"+receiver+"|"+file.getName()+"|"+leng);   //dòng này thì có hiển thị ra
+            this.sendToServer(ServerCommands.SEND_FILE_TO_SERVER+"|"+sender+"|"+receiver+"|"+file.getName()+"|"+leng);
 
             fis = new FileInputStream(file);
             bos = new BufferedOutputStream(socketOfSender.getOutputStream());

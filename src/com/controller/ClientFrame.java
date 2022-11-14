@@ -411,7 +411,7 @@ public class ClientFrame extends JFrame implements Runnable {
             isConnectToServer = true;
             this.connectToServer(hostname);
         }
-        this.sendToServer("CMD_CHECK_NAME|" +this.name);
+        this.sendToServer(ServerCommands.CHECK_USER_USERNAME+"|" +this.name);
 
 
         String response = this.recieveFromServer();
@@ -533,7 +533,7 @@ public class ClientFrame extends JFrame implements Runnable {
         PrivateChat pc;
 
         while(isRunning) {
-            response = this.recieveFromServer();   //nhận phản hồi từ server sau khi đã gửi data ở trên
+            response = this.recieveFromServer();
             tokenizer = new StringTokenizer(response, "|");
             cmd = tokenizer.nextToken();
             switch (cmd) {
@@ -546,7 +546,7 @@ public class ClientFrame extends JFrame implements Runnable {
 
                     break;
 
-                case "CMD_PRIVATECHAT":
+                case ServerCommands.PRIVATE_CHAT:
 
                     sender = tokenizer.nextToken();
                     msg = response.substring(cmd.length()+sender.length()+2, response.length());
@@ -573,7 +573,7 @@ public class ClientFrame extends JFrame implements Runnable {
                     pc.appendMessage_Left(sender+": ", msg);
                     break;
 
-                case "CMD_ONLINE_USERS":
+                case ServerCommands.ONLINE_USERS:
                     listModel.clear();
                     listModel_rp.clear();
                     while(tokenizer.hasMoreTokens()) {
@@ -587,7 +587,7 @@ public class ClientFrame extends JFrame implements Runnable {
                     roomPanel.getOnlineList_rp().setModel(listModel_rp);
                     break;
 
-                case "CMD_ONLINE_THIS_ROOM":
+                case ServerCommands.ONLINE_USERS_IN_ROOM:
                     listModelThisRoom.clear();
                     while(tokenizer.hasMoreTokens()) {
                         cmd = tokenizer.nextToken();
@@ -597,7 +597,7 @@ public class ClientFrame extends JFrame implements Runnable {
                     break;
 
 
-                case "CMD_FILEAVAILABLE":
+                case ServerCommands.AVAILABLE_FILE:
                     fileName = tokenizer.nextToken();
                     thePersonIamChattingWith = tokenizer.nextToken();
                     thePersonSendFile = tokenizer.nextToken();

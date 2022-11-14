@@ -3,6 +3,7 @@ package com.view;
 
 import com.controller.ReceivingFileThread;
 import com.controller.SendFileFrame;
+import com.server.ServerCommands;
 
 
 import javax.swing.*;
@@ -249,7 +250,7 @@ public class PrivateChat extends JFrame {
         String msg = tfInput_pc.getText();
         if (msg.equals("")) return;
         appendMessage_Right(msg);
-        sendToServer("CMD_PRIVATECHAT|" + this.sender + "|" + this.receiver + "|" + msg);
+        sendToServer(ServerCommands.PRIVATE_CHAT +"|" + this.sender + "|" + this.receiver + "|" + msg);
         tfInput_pc.setText("");
     }
 
