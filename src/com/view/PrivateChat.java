@@ -110,7 +110,7 @@ public class PrivateChat extends JFrame {
         bt.setName(fileName);
         bt.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae) {
+            public void actionPerformed(ActionEvent event) {
                 downloadFile(fileName);
             }
         });

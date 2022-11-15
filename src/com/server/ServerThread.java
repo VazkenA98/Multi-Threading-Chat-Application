@@ -240,7 +240,7 @@ public class ServerThread extends Thread {
                             sendToSpecificClient(st_receiver, ServerCommands.PRIVATE_CHAT + "|" + privateSender + "|" + messageContent);
                             break;
 
-                        case "CMD_ROOM":
+                        case ServerCommands.ENTER_ROOM:
                             clientRoom = tokenizer.nextToken();
                             changeUserRoom();
                             notifyToAllUsers(ServerCommands.ONLINE_USERS + "|" + getAllUsers());

@@ -29,94 +29,63 @@ import javax.swing.*;
 
 
 public class ClientFrame extends JFrame implements Runnable {
-    String serverHost;
     public static final String NICKNAME_EXIST = "This nickname is already login in another place! Please using another nickname";
     public static final String NICKNAME_INVALID = "Nickname or password is incorrect";
-
-
-    String name;
-    String room;
-    Socket socketOfClient;
-    BufferedWriter bw;
-    BufferedReader br;
-
-    JPanel mainPanel;
-    LoginPanel loginPanel;
-    ClientPanel clientPanel;
-    RoomPanel roomPanel;
-
-    Thread clientThread;
+    private String name;
+    private String room;
+    private Socket socketOfClient;
+    private String serverHost;
+    private BufferedWriter bufferedWriter;
+    private BufferedReader bufferedReader;
+    public Thread clientThread;
     boolean isRunning;
-
-    JMenuBar menuBar;
-    JMenu menuShareFile;
-    JMenuItem itemSendFile;
-    JMenu menuAccount;
-    JMenuItem itemLeaveRoom;
-
-
-    StringTokenizer tokenizer;
-
-    DefaultListModel<String> listModel, listModelThisRoom, listModel_rp;
-
     boolean isConnectToServer;
-
-    int timeClicked = 0;
-
-    Hashtable<String, PrivateChat> listReceiver;
+    public JMenuBar menuBar = new JMenuBar();
+    public JMenu menuShareFile = new JMenu();
+    public JMenuItem itemSendFile = new JMenuItem();
+    public JMenu menuAccount = new JMenu();
+    public JMenuItem itemLeaveRoom =  new JMenuItem();
+    public JPanel mainPanel = new JPanel();
+    public LoginPanel loginPanel = new LoginPanel();
+    public ClientPanel clientPanel = new ClientPanel();
+    public RoomPanel roomPanel = new RoomPanel();
+    public StringTokenizer tokenizer;
+    public DefaultListModel<String> listModel = new DefaultListModel<>();
+    public DefaultListModel<String> listModelThisRoom = new DefaultListModel<>();
+    public DefaultListModel<String> listModelRoomPeople= new DefaultListModel<>();
+    public int timeClicked = 0;
+    public Hashtable<String, PrivateChat> listReceiver = new Hashtable<>();
 
     public ClientFrame(String name) {
         this.name = name;
         socketOfClient = null;
-        bw = null;
-        br = null;
+        bufferedWriter = null;
+        bufferedReader = null;
         isRunning = true;
-        listModel = new DefaultListModel<>();
-        listModelThisRoom = new DefaultListModel<>();
-        listModel_rp = new DefaultListModel<>();
         isConnectToServer = false;
-        listReceiver = new Hashtable<>();
-
-        mainPanel = new JPanel();
-        loginPanel = new LoginPanel();
-        clientPanel = new ClientPanel();
-        roomPanel = new RoomPanel();
-
-
-        loginPanel.setVisible(true);
         roomPanel.setVisible(false);
         clientPanel.setVisible(false);
-
         mainPanel.add(loginPanel);
         mainPanel.add(roomPanel);
         mainPanel.add(clientPanel);
+        menuAccount.setText("Account");
+        itemLeaveRoom.setText("Leave room");
+        menuAccount.add(itemLeaveRoom);
+        menuShareFile.setText("File");
+        itemSendFile.setText("Send file");
+        menuShareFile.add(itemSendFile);
+        menuBar.add(menuAccount);
+        menuBar.add(menuShareFile);
 
         addEventsForLoginPanel();
         addEventsForClientPanel();
         addEventsForRoomPanel();
 
-        menuBar = new JMenuBar();
-        menuShareFile = new JMenu();
-        menuAccount = new JMenu();
-        itemLeaveRoom = new JMenuItem();
-        itemSendFile = new JMenuItem();
-
-        menuAccount.setText("Account");
-        itemLeaveRoom.setText("Leave room");
-        menuAccount.add(itemLeaveRoom);
-
-        menuShareFile.setText("File sharing");
-        itemSendFile.setText("Send a file");
-        menuShareFile.add(itemSendFile);
-
-        menuBar.add(menuAccount);
-        menuBar.add(menuShareFile);
-
         itemLeaveRoom.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae) {
-                int kq = JOptionPane.showConfirmDialog(ClientFrame.this, "Are you sure to leave this room?", "Notice", JOptionPane.YES_NO_OPTION);
-                if(kq == JOptionPane.YES_OPTION) {
+            public void actionPerformed(ActionEvent event) {
+                int ans = JOptionPane.showConfirmDialog(ClientFrame.this, "Are you sure to leave this room ?", "Notice", JOptionPane.YES_NO_OPTION);
+                if(ans == JOptionPane.YES_OPTION) {
                     leaveRoom();
                 }
             }
@@ -124,8 +93,8 @@ public class ClientFrame extends JFrame implements Runnable {
 
         itemSendFile.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae) {
-                JOptionPane.showMessageDialog(ClientFrame.this, "This function has changed! Go to private chat to send a file", "Info", JOptionPane.INFORMATION_MESSAGE);
+            public void actionPerformed(ActionEvent event) {
+                JOptionPane.showMessageDialog(ClientFrame.this, "Go to private chat to send a file", "Notice", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         menuBar.setVisible(false);
@@ -144,14 +113,14 @@ public class ClientFrame extends JFrame implements Runnable {
         loginPanel.getTfNickname().addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent ke) {
-                if(ke.getKeyCode() == KeyEvent.VK_ENTER) btOkEvent();
+                if(ke.getKeyCode() == KeyEvent.VK_ENTER) buttonOkEvent();
             }
 
         });
         loginPanel.getBtOK().addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae) {
-                btOkEvent();
+            public void actionPerformed(ActionEvent event) {
+                buttonOkEvent();
             }
         });
         loginPanel.getLbBack_login().addMouseListener(new MouseAdapter() {
@@ -166,71 +135,33 @@ public class ClientFrame extends JFrame implements Runnable {
 
 
     private void addEventsForClientPanel() {
-        clientPanel.getBtSend().addActionListener(new ActionListener() {
+        clientPanel.getButtonSend().addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae) {
-                btSendEvent();
+            public void actionPerformed(ActionEvent event) {
+                buttonSendEvent();
             }
         });
-        clientPanel.getBtExit().addActionListener(new ActionListener() {
+        clientPanel.getButtonExit().addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae) {
-                btExitEvent();
+            public void actionPerformed(ActionEvent event) {
+                buttonExitEvent();
             }
         });
         clientPanel.getTaInput().addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent ke) {
                 if(ke.getKeyCode() == KeyEvent.VK_ENTER) {
-                    btSendEvent();
-                    btClearEvent();
+                    buttonSendEvent();
+                    buttonClearEvent();
                 }
             }
         });
-/*        //events for emotion icons:
-        clientPanel.getLbLike().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
-                sendToServer("CMD_ICON|LIKE");
-            }
-        });
-        clientPanel.getLbDislike().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
-                sendToServer("CMD_ICON|DISLIKE");
-            }
-        });
-        clientPanel.getLbPacMan().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
-                sendToServer("CMD_ICON|PAC_MAN");
-            }
-        });
-        clientPanel.getLbCry().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
-                sendToServer("CMD_ICON|CRY");
-            }
-        });
-        clientPanel.getLbGrin().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
-                sendToServer("CMD_ICON|GRIN");
-            }
-        });
-        clientPanel.getLbSmile().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
-                sendToServer("CMD_ICON|SMILE");
-            }
-        });
-
         clientPanel.getOnlineList().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
                 openPrivateChatInsideRoom();
             }
-        });*/
+        });
     }
 
     private void addEventsForRoomPanel() {
@@ -291,7 +222,7 @@ public class ClientFrame extends JFrame implements Runnable {
             }
         });
 
-        roomPanel.getOnlineList_rp().addMouseListener(new MouseAdapter() {
+        roomPanel.getOnlineListRoomPeople().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
                 openPrivateChatOutsideRoom();
@@ -306,22 +237,23 @@ public class ClientFrame extends JFrame implements Runnable {
             countingTo500ms.start();
         }
 
-        if(timeClicked == 2) {  //nếu như countingTo500ms chưa thực hiện xong, tức là timeClicked vẫn = 2:
+        if(timeClicked == 2) {
             String nameClicked = clientPanel.getOnlineList().getSelectedValue();
+
             if(nameClicked.equals(ClientFrame.this.name)) {
                 JOptionPane.showMessageDialog(ClientFrame.this, "Can't send a message to yourself!", "Info", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
-            if(!listReceiver.containsKey(nameClicked)) {    //nếu đây là lần đầu tiên nhắn tin với người mà ta vừa double-click vào
-                PrivateChat pc = new PrivateChat(name, nameClicked, serverHost, bw, br);
+            if(!listReceiver.containsKey(nameClicked)) {
+                PrivateChat privateChat = new PrivateChat(name, nameClicked, serverHost, bufferedWriter, bufferedReader);
 
-                pc.getLbReceiver().setText("Private chat with \""+pc.receiver+"\"");
-                pc.setTitle(pc.receiver);
-                pc.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                pc.setVisible(true);
+                privateChat.getLbReceiver().setText("Private chat with \""+privateChat.receiver+"\"");
+                privateChat.setTitle(privateChat.receiver);
+                privateChat.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                privateChat.setVisible(true);
 
-                listReceiver.put(nameClicked, pc);
+                listReceiver.put(nameClicked, privateChat);
             } else {
                 PrivateChat pc = listReceiver.get(nameClicked);
                 pc.setVisible(true);
@@ -337,19 +269,19 @@ public class ClientFrame extends JFrame implements Runnable {
         }
 
         if(timeClicked == 2) {
-            String privateReceiver = roomPanel.getOnlineList_rp().getSelectedValue();
-            PrivateChat pc = listReceiver.get(privateReceiver);
-            if(pc == null) {
-                pc = new PrivateChat(name, privateReceiver, serverHost, bw, br);
+            String privateReceiver = roomPanel.getOnlineListRoomPeople().getSelectedValue();
+            PrivateChat privateChat = listReceiver.get(privateReceiver);
+            if(privateChat == null) {
+                privateChat = new PrivateChat(name, privateReceiver, serverHost, bufferedWriter, bufferedReader);
 
-                pc.getLbReceiver().setText("Private chat with \""+pc.receiver+"\"");
-                pc.setTitle(pc.receiver);
-                pc.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                pc.setVisible(true);
+                privateChat.getLbReceiver().setText("Private chat with \""+privateChat.receiver+"\"");
+                privateChat.setTitle(privateChat.receiver);
+                privateChat.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                privateChat.setVisible(true);
 
-                listReceiver.put(privateReceiver, pc);
+                listReceiver.put(privateReceiver, privateChat);
             } else {
-                pc.setVisible(true);
+                privateChat.setVisible(true);
             }
         }
     }
@@ -369,11 +301,11 @@ public class ClientFrame extends JFrame implements Runnable {
 
     private void labelRoomEvent() {
         this.clientPanel.getTpMessage().setText("");
-        this.sendToServer("CMD_ROOM|"+this.room);
+        this.sendToServer(ServerCommands.ENTER_ROOM+"|"+this.room);
         try {
-            Thread.sleep(200);      //chờ tý cho nó đỡ lỗi!
+            Thread.sleep(200);
         } catch (InterruptedException ex) {
-            Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
         this.roomPanel.setVisible(false);
         this.clientPanel.setVisible(true);
@@ -386,7 +318,7 @@ public class ClientFrame extends JFrame implements Runnable {
         try {
             Thread.sleep(200);
         } catch (InterruptedException ex) {
-            Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+           ex.printStackTrace();
         }
         this.roomPanel.setVisible(true);
         this.clientPanel.setVisible(false);
@@ -394,9 +326,7 @@ public class ClientFrame extends JFrame implements Runnable {
         this.setTitle("\""+this.name+"\"");
     }
 
-
-    ////////////////////////Events////////////////////////////
-    private void btOkEvent() {
+    private void buttonOkEvent() {
         String hostname = loginPanel.getTfHost().getText().trim();
         String nickname = loginPanel.getTfNickname().getText().trim();
 
@@ -414,7 +344,7 @@ public class ClientFrame extends JFrame implements Runnable {
         this.sendToServer(ServerCommands.CHECK_USER_USERNAME+"|" +this.name);
 
 
-        String response = this.recieveFromServer();
+        String response = this.receiveFromServer();
         if(response != null) {
             if (response.equals(NICKNAME_EXIST) || response.equals(NICKNAME_INVALID)) {
                 JOptionPane.showMessageDialog(this, response, "Error", JOptionPane.ERROR_MESSAGE);
@@ -430,41 +360,41 @@ public class ClientFrame extends JFrame implements Runnable {
 
                 clientThread = new Thread(this);
                 clientThread.start();
-                this.sendToServer("CMD_ROOM|"+this.room);
+                this.sendToServer(ServerCommands.ENTER_ROOM+"|"+this.room);
 
             }
         }
     }
 
-    private void btSendEvent() {
+    private void buttonSendEvent() {
         String message = clientPanel.getTaInput().getText().trim();
         if(message.equals("")) clientPanel.getTaInput().setText("");
         else {
             this.sendToServer(ServerCommands.CHAT_COMMAND+"|" + message);
-            this.btClearEvent();
+            this.buttonClearEvent();
         }
 
     }
 
-    private void btClearEvent() {
+    private void buttonClearEvent() {
         clientPanel.getTaInput().setText("");
     }
 
-    private void btExitEvent() {
+    private void buttonExitEvent() {
         try {
             isRunning = false;
             System.exit(0);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    ////////////////////////End of Events////////////////////////////
 
     public void connectToServer(String hostAddress) {
         try {
             socketOfClient = new Socket(hostAddress, 9999);
-            bw = new BufferedWriter(new OutputStreamWriter(socketOfClient.getOutputStream()));
-            br = new BufferedReader(new InputStreamReader(socketOfClient.getInputStream()));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(socketOfClient.getOutputStream()));
+            bufferedReader = new BufferedReader(new InputStreamReader(socketOfClient.getInputStream()));
 
         } catch (java.net.UnknownHostException e) {
             JOptionPane.showMessageDialog(this, "Host IP is not correct.\nPlease try again!", "Failed to connect to server", JOptionPane.ERROR_MESSAGE);
@@ -473,125 +403,106 @@ public class ClientFrame extends JFrame implements Runnable {
         } catch(java.net.NoRouteToHostException e) {
             JOptionPane.showMessageDialog(this, "Can't find this host!\nPlease try again!", "Failed to connect to server", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
-            Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
 
         }
     }
 
     public void sendToServer(String line) {
         try {
-            this.bw.write(line);
-            this.bw.newLine();
-            this.bw.flush();
+            this.bufferedWriter.write(line);
+            this.bufferedWriter.newLine();
+            this.bufferedWriter.flush();
         } catch (java.net.SocketException e) {
-            JOptionPane.showMessageDialog(this, "Server is closed, can't send message!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Server is closed you can't send message!", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (java.lang.NullPointerException e) {
-            System.out.println("[sendToServer()] Server is not open yet, or already closed!");
+           e.printStackTrace();
         } catch (IOException ex) {
             Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public String recieveFromServer() {
+    public String receiveFromServer() {
         try {
-            return this.br.readLine();
-        } catch (java.lang.NullPointerException e) {
-            System.out.println("[recieveFromServer()] Server is not open yet, or already closed!");
-        } catch (IOException ex) {
-            Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+            return this.bufferedReader.readLine();
+        } catch (NullPointerException | IOException e) {
+            e.printStackTrace();
         }
         return null;
-    }
-
-    public void disconnect() {
-        try {
-            if(br!=null) this.br.close();
-            if(bw!=null) this.bw.close();
-            if(socketOfClient!=null) this.socketOfClient.close();
-        } catch (IOException ex) {
-            Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public static void main(String[] args) {
-
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        ClientFrame client = new ClientFrame(null);
-        client.setVisible(true);
     }
 
     @Override
     public void run() {
         String response;
-        String sender, receiver, fileName, thePersonIamChattingWith, thePersonSendFile;
+        String sender;
+        String receiver;
+        String fileName;
+        String thePersonIamChattingWith;
+        String thePersonSendFile;
         String msg;
-        String cmd;
-        PrivateChat pc;
+        String serverCommand;
+        PrivateChat privateChat;
 
         while(isRunning) {
-            response = this.recieveFromServer();
+            response = this.receiveFromServer();
             tokenizer = new StringTokenizer(response, "|");
-            cmd = tokenizer.nextToken();
-            switch (cmd) {
+            serverCommand = tokenizer.nextToken();
+            switch (serverCommand) {
+
                 case ServerCommands.CHAT_COMMAND:
                     sender = tokenizer.nextToken();
-                    msg = response.substring(cmd.length()+sender.length()+2, response.length());
+                    msg = response.substring(serverCommand.length()+sender.length()+2, response.length());
 
-                    if(sender.equals(this.name)) this.clientPanel.appendMessage(sender+": ", msg, Color.BLACK, new Color(0, 102, 204));
-                    else this.clientPanel.appendMessage(sender+": ", msg, Color.MAGENTA, new Color(56, 224, 0));
+                    if(sender.equals(this.name)) this.clientPanel.appendMessage(sender+": ", msg, Color.BLACK, new Color(0, 0, 0));
+                    else this.clientPanel.appendMessage(sender+": ", msg, Color.MAGENTA, new Color(0, 0, 0));
 
                     break;
 
                 case ServerCommands.PRIVATE_CHAT:
 
                     sender = tokenizer.nextToken();
-                    msg = response.substring(cmd.length()+sender.length()+2, response.length());
+                    msg = response.substring(serverCommand.length()+sender.length()+2, response.length());
+                    privateChat = listReceiver.get(sender);
 
-                    pc = listReceiver.get(sender);
+                    if(privateChat == null) {
+                        privateChat = new PrivateChat(name, sender, serverHost, bufferedWriter, bufferedReader);
+                        privateChat.sender = name;
+                        privateChat.receiver = sender;
+                        privateChat.serverHost = this.serverHost;
+                        privateChat.bw = ClientFrame.this.bufferedWriter;
+                        privateChat.br = ClientFrame.this.bufferedReader;
 
-                    if(pc == null) {
-                        pc = new PrivateChat(name, sender, serverHost, bw, br);
-                        pc.sender = name;
-                        pc.receiver = sender;
-                        pc.serverHost = this.serverHost;
-                        pc.bw = ClientFrame.this.bw;
-                        pc.br = ClientFrame.this.br;
+                        privateChat.getLbReceiver().setText("Private chat with \""+privateChat.receiver+"\"");
+                        privateChat.setTitle(privateChat.receiver);
+                        privateChat.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        privateChat.setVisible(true);
 
-                        pc.getLbReceiver().setText("Private chat with \""+pc.receiver+"\"");
-                        pc.setTitle(pc.receiver);
-                        pc.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        pc.setVisible(true);
-
-                        listReceiver.put(sender, pc);
+                        listReceiver.put(sender, privateChat);
                     } else {
-                        pc.setVisible(true);
+                        privateChat.setVisible(true);
                     }
-                    pc.appendMessage_Left(sender+": ", msg);
+                    privateChat.appendMessage_Left(sender+": ", msg);
                     break;
 
                 case ServerCommands.ONLINE_USERS:
                     listModel.clear();
-                    listModel_rp.clear();
+                    listModelRoomPeople.clear();
                     while(tokenizer.hasMoreTokens()) {
-                        cmd = tokenizer.nextToken();
-                        listModel.addElement(cmd);
-                        listModel_rp.addElement(cmd);
+                        serverCommand = tokenizer.nextToken();
+                        listModel.addElement(serverCommand);
+                        listModelRoomPeople.addElement(serverCommand);
                     }
                     clientPanel.getOnlineList().setModel(listModel);
 
-                    listModel_rp.removeElement(this.name);
-                    roomPanel.getOnlineList_rp().setModel(listModel_rp);
+                    listModelRoomPeople.removeElement(this.name);
+                    roomPanel.getOnlineListRoomPeople().setModel(listModelRoomPeople);
                     break;
 
                 case ServerCommands.ONLINE_USERS_IN_ROOM:
                     listModelThisRoom.clear();
                     while(tokenizer.hasMoreTokens()) {
-                        cmd = tokenizer.nextToken();
-                        listModelThisRoom.addElement(cmd);
+                        serverCommand = tokenizer.nextToken();
+                        listModelThisRoom.addElement(serverCommand);
                     }
                     clientPanel.getOnlineListThisRoom().setModel(listModelThisRoom);
                     break;
@@ -602,26 +513,26 @@ public class ClientFrame extends JFrame implements Runnable {
                     thePersonIamChattingWith = tokenizer.nextToken();
                     thePersonSendFile = tokenizer.nextToken();
 
-                    pc = listReceiver.get(thePersonIamChattingWith);
+                    privateChat = listReceiver.get(thePersonIamChattingWith);
 
-                    if(pc == null) {
+                    if(privateChat == null) {
                         sender = this.name;
                         receiver = thePersonIamChattingWith;
-                        pc = new PrivateChat(sender, receiver, serverHost, bw, br);
+                        privateChat = new PrivateChat(sender, receiver, serverHost, bufferedWriter, bufferedReader);
 
-                        pc.getLbReceiver().setText("Private chat with \""+pc.receiver+"\"");
-                        pc.setTitle(pc.receiver);
-                        pc.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        privateChat.getLbReceiver().setText("Private chat with \""+privateChat.receiver+"\"");
+                        privateChat.setTitle(privateChat.receiver);
+                        privateChat.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-                        listReceiver.put(receiver, pc);
+                        listReceiver.put(receiver, privateChat);
                     }
 
-                    pc.setVisible(true);
-                    pc.insertButton(thePersonSendFile, fileName);
+                    privateChat.setVisible(true);
+                    privateChat.insertButton(thePersonSendFile, fileName);
                     break;
 
                 default:
-                    if(!response.startsWith("CMD_")) {
+                    if(!response.startsWith("SERVER_")) {
                         if(response.equals("Warning: Server has been closed!")) {
                             this.clientPanel.appendMessage(response, Color.RED);
                         }
@@ -633,5 +544,15 @@ public class ClientFrame extends JFrame implements Runnable {
         System.out.println("Disconnected to server!");
     }
 
+    public static void main(String[] args) {
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+        ClientFrame client = new ClientFrame(null);
+        client.setVisible(true);
+    }
 
 }

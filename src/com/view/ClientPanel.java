@@ -15,8 +15,8 @@ public class ClientPanel extends JPanel {
 
     JFileChooser chooser;
 
-    private JButton btExit;
-    private JButton btSend;
+    private JButton buttonExit;
+    private JButton buttonSend;
     private JLabel jLabel1;
     private JLabel jLabel2;
     private JLabel jLabel4;
@@ -42,12 +42,12 @@ public class ClientPanel extends JPanel {
 
     }
 
-    public JButton getBtExit() {
-        return btExit;
+    public JButton getButtonExit() {
+        return buttonExit;
     }
 
-    public JButton getBtSend() {
-        return btSend;
+    public JButton getButtonSend() {
+        return buttonSend;
     }
 
     public JTextArea getTaInput() {
@@ -57,7 +57,6 @@ public class ClientPanel extends JPanel {
     public JTextPane getTpMessage() {
         return tpMessage;
     }
-
 
     public JList<String> getOnlineList() {
         return onlineList;
@@ -128,8 +127,8 @@ public class ClientPanel extends JPanel {
     private void initComponents() {
 
         jLabel1 = new JLabel();
-        btExit = new JButton();
-        btSend = new JButton();
+        buttonExit = new JButton();
+        buttonSend = new JButton();
         jScrollPane3 = new JScrollPane();
         taInput = new JTextArea();
         jLabel2 = new JLabel();
@@ -151,13 +150,13 @@ public class ClientPanel extends JPanel {
         jLabel1.setFont(new Font("Arial", 0, 14)); // NOI18N
         jLabel1.setText("Online");
 
-        btExit.setFont(new Font("Arial", 1, 16)); // NOI18N
-        btExit.setForeground(new Color(255, 102, 102));
-        btExit.setText("Exit");
+        buttonExit.setFont(new Font("Arial", 1, 16)); // NOI18N
+        buttonExit.setForeground(new Color(255, 102, 102));
+        buttonExit.setText("Exit");
 
-        btSend.setFont(new Font("Arial", 1, 18)); // NOI18N
-        btSend.setForeground(new Color(102, 102, 255));
-        btSend.setText("Send");
+        buttonSend.setFont(new Font("Arial", 1, 18)); // NOI18N
+        buttonSend.setForeground(new Color(102, 102, 255));
+        buttonSend.setText("Send");
 
         taInput.setColumns(20);
         taInput.setRows(5);
@@ -199,7 +198,7 @@ public class ClientPanel extends JPanel {
                                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                                 .addComponent(jScrollPane2)
                                                 .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(btSend)
+                                                        .addComponent(buttonSend)
                                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                                         .addComponent(lbLike)
                                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -218,7 +217,7 @@ public class ClientPanel extends JPanel {
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(btExit, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(buttonExit, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(jScrollPane4, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
                                                         .addComponent(jScrollPane5, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                                         .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -256,13 +255,13 @@ public class ClientPanel extends JPanel {
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                                         .addComponent(lbGrin, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btExit, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(buttonExit, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(lbLike, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(lbDislike, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(lbPacman, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(lbSmile, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(lbCry, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btSend, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(buttonSend, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addContainerGap(26, Short.MAX_VALUE))
         );
 

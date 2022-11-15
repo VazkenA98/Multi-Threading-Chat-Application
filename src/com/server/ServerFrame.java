@@ -84,7 +84,7 @@ public class ServerFrame extends JFrame implements Runnable {
 
         itemAddRoom.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae) {
+            public void actionPerformed(ActionEvent event) {
                 String addedRoomName = JOptionPane.showInputDialog(ServerFrame.this, "Enter room name to add");
                 if (addedRoomName != null) {
                     String msg = RoomPanel.addRoom(addedRoomName);
@@ -95,7 +95,7 @@ public class ServerFrame extends JFrame implements Runnable {
 
         itemRemoveRoom.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae) {
+            public void actionPerformed(ActionEvent event) {
                 String deletedRoomName = JOptionPane.showInputDialog(ServerFrame.this, "Enter room name to remove");
                 if (deletedRoomName != null) {
                     String msg = RoomPanel.deleteRoom(deletedRoomName);

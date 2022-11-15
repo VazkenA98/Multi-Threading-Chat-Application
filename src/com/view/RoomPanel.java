@@ -22,7 +22,7 @@ public class RoomPanel extends JPanel {
     private JLabel lbRoom6 = new JLabel();
     private JLabel lbRoom7 = new JLabel();
     private JLabel lbRoom8 = new JLabel();
-    private JList<String> onlineList_rp;
+    private JList<String> onlineListRoomPeople;
     private List<JLabel> customRooms =  new ArrayList<>(Arrays.asList(lbRoom5, lbRoom6, lbRoom7, lbRoom8));
 
 
@@ -39,7 +39,7 @@ public class RoomPanel extends JPanel {
         lbRoom2 = new JLabel();
         lbRoom4 = new JLabel();
         jScrollPane1 = new JScrollPane();
-        onlineList_rp = new JList<>();
+        onlineListRoomPeople = new JList<>();
         jLabel1 = new JLabel();
 
 
@@ -70,9 +70,9 @@ public class RoomPanel extends JPanel {
         lbRoom4.setText("Room 4");
         lbRoom4.setOpaque(true);
 
-        onlineList_rp.setFont(new Font("Arial", 0, 14)); // NOI18N
-        onlineList_rp.setToolTipText("double-click to send a message");
-        jScrollPane1.setViewportView(onlineList_rp);
+        onlineListRoomPeople.setFont(new Font("Arial", 0, 14)); // NOI18N
+        onlineListRoomPeople.setToolTipText("double-click to send a message");
+        jScrollPane1.setViewportView(onlineListRoomPeople);
 
         jLabel1.setFont(new Font("Arial", 0, 24)); // NOI18N
         jLabel1.setText("Online");
@@ -180,8 +180,8 @@ public class RoomPanel extends JPanel {
         return lbRoom8;
     }
 
-    public JList<String> getOnlineList_rp() {
-        return onlineList_rp;
+    public JList<String> getOnlineListRoomPeople() {
+        return onlineListRoomPeople;
     }
 
 
