@@ -5,27 +5,27 @@ import com.server.ApplicationProperties;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 
 public class RoomPanel extends JPanel {
 
-    private JLabel jLabel1;
-    private JLabel jLabel2;
-    private JScrollPane jScrollPane1;
-    private JLabel lbRoom1;
-    private JLabel lbRoom2;
-    private JLabel lbRoom3;
-    private JLabel lbRoom4;
-    private JLabel lbRoom5 = new JLabel();
-    private JLabel lbRoom6 = new JLabel();
-    private JLabel lbRoom7 = new JLabel();
-    private JLabel lbRoom8 = new JLabel();
-    private JList<String> onlineListRoomPeople;
-    private List<JLabel> customRooms =  new ArrayList<>(Arrays.asList(lbRoom5, lbRoom6, lbRoom7, lbRoom8));
-
-
+    public JLabel jLabel1 = new JLabel();
+    public JLabel jLabel2 = new JLabel();
+    public JScrollPane jScrollPane1 = new JScrollPane();
+    public JLabel lbRoom1 = new JLabel();
+    public JLabel lbRoom2 = new JLabel();
+    public JLabel lbRoom3 = new JLabel();
+    public JLabel lbRoom4 = new JLabel();
+    public JLabel lbRoom5 = new JLabel();
+    public JLabel lbRoom6 = new JLabel();
+    public JLabel lbRoom7 = new JLabel();
+    public JLabel lbRoom8 = new JLabel();
+    public JList<String> onlineListRoomPeople = new JList<>();
+    public List<JLabel> customRooms = new ArrayList<>(Arrays.asList(lbRoom5, lbRoom6, lbRoom7, lbRoom8));
 
     public RoomPanel() {
         initComponents();
@@ -33,53 +33,44 @@ public class RoomPanel extends JPanel {
 
     private void initComponents() {
 
-        lbRoom1 = new JLabel();
-        jLabel2 = new JLabel();
-        lbRoom3 = new JLabel();
-        lbRoom2 = new JLabel();
-        lbRoom4 = new JLabel();
-        jScrollPane1 = new JScrollPane();
-        onlineListRoomPeople = new JList<>();
-        jLabel1 = new JLabel();
-
-
         lbRoom1.setBackground(new Color(179, 177, 177, 255));
-        lbRoom1.setFont(new Font("Arial", 0, 18)); // NOI18N
+        lbRoom1.setFont(new Font("Arial", 0, 18));
         lbRoom1.setHorizontalAlignment(SwingConstants.CENTER);
         lbRoom1.setText("Room 1");
         lbRoom1.setOpaque(true);
 
-        jLabel2.setFont(new Font("Arial", 1, 24)); // NOI18N
+        jLabel2.setFont(new Font("Arial", 1, 24));
         jLabel2.setText("Choose room");
 
         lbRoom3.setBackground(new Color(179, 177, 177, 255));
-        lbRoom3.setFont(new Font("Arial", 0, 18)); // NOI18N
+        lbRoom3.setFont(new Font("Arial", 0, 18));
         lbRoom3.setHorizontalAlignment(SwingConstants.CENTER);
         lbRoom3.setText("Room 3");
         lbRoom3.setOpaque(true);
 
         lbRoom2.setBackground(new Color(179, 177, 177, 255));
-        lbRoom2.setFont(new Font("Arial", 0, 18)); // NOI18N;
+        lbRoom2.setFont(new Font("Arial", 0, 18));
+        ;
         lbRoom2.setHorizontalAlignment(SwingConstants.CENTER);
         lbRoom2.setText("Room 2");
         lbRoom2.setOpaque(true);
 
         lbRoom4.setBackground(new Color(179, 177, 177, 255));
-        lbRoom4.setFont(new Font("Arial", 0, 18)); // NOI18N
+        lbRoom4.setFont(new Font("Arial", 0, 18));
         lbRoom4.setHorizontalAlignment(SwingConstants.CENTER);
         lbRoom4.setText("Room 4");
         lbRoom4.setOpaque(true);
 
-        onlineListRoomPeople.setFont(new Font("Arial", 0, 14)); // NOI18N
-        onlineListRoomPeople.setToolTipText("double-click to send a message");
+        onlineListRoomPeople.setFont(new Font("Arial", 0, 14));
+        onlineListRoomPeople.setToolTipText("Double click to send a message");
         jScrollPane1.setViewportView(onlineListRoomPeople);
 
-        jLabel1.setFont(new Font("Arial", 0, 24)); // NOI18N
+        jLabel1.setFont(new Font("Arial", 0, 24));
         jLabel1.setText("Online");
         jLabel1.setToolTipText("");
 
         int listOrder = 0;
-        for (Map.Entry<String,Boolean> entry : ApplicationProperties.getRoomsMap().entrySet()){
+        for (Map.Entry<String, Boolean> entry : ApplicationProperties.getRoomsMap().entrySet()) {
             customRooms.get(listOrder).setBackground(new Color(179, 177, 177, 255));
             customRooms.get(listOrder).setFont(new Font("Arial", 0, 18));
             customRooms.get(listOrder).setHorizontalAlignment(SwingConstants.CENTER);
@@ -185,21 +176,21 @@ public class RoomPanel extends JPanel {
     }
 
 
-    public static String addRoom(String name){
+    public static String addRoom(String name) {
         String msg = "You reached rooms size limit";
         Map<String, Boolean> map = ApplicationProperties.getRoomsMap();
-        if(map.size() < 4){
+        if (map.size() < 4) {
             ApplicationProperties.addRoomNameAndFlag(name);
             msg = "Done";
         }
         return msg;
     }
 
-    public static String deleteRoom(String name){
-        String msg = "There's no such a room with name: "+name;
+    public static String deleteRoom(String name) {
+        String msg = "There's no such a room with name: " + name;
 
-        for (Map.Entry<String,Boolean> entry : ApplicationProperties.getRoomsMap().entrySet()){
-            if(entry.getKey().equals(name)){
+        for (Map.Entry<String, Boolean> entry : ApplicationProperties.getRoomsMap().entrySet()) {
+            if (entry.getKey().equals(name)) {
                 ApplicationProperties.removeRoom(name);
                 msg = "Done";
             }

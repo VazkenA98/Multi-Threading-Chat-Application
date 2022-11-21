@@ -123,7 +123,7 @@ public class ClientFrame extends JFrame implements Runnable {
                 buttonOkEvent();
             }
         });
-        loginPanel.getLbBack_login().addMouseListener(new MouseAdapter() {
+        loginPanel.getLbBackLogin().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
                 loginPanel.setVisible(false);
@@ -469,8 +469,8 @@ public class ClientFrame extends JFrame implements Runnable {
                         privateChat.sender = name;
                         privateChat.receiver = sender;
                         privateChat.serverHost = this.serverHost;
-                        privateChat.bw = ClientFrame.this.bufferedWriter;
-                        privateChat.br = ClientFrame.this.bufferedReader;
+                        privateChat.bufferedWriter = ClientFrame.this.bufferedWriter;
+                        privateChat.bufferedReader = ClientFrame.this.bufferedReader;
 
                         privateChat.getLbReceiver().setText("Private chat with \""+privateChat.receiver+"\"");
                         privateChat.setTitle(privateChat.receiver);
@@ -481,7 +481,7 @@ public class ClientFrame extends JFrame implements Runnable {
                     } else {
                         privateChat.setVisible(true);
                     }
-                    privateChat.appendMessage_Left(sender+": ", msg);
+                    privateChat.appendMessageLeft(sender+": ", msg);
                     break;
 
                 case ServerCommands.ONLINE_USERS:

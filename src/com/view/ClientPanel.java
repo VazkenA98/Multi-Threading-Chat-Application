@@ -1,7 +1,6 @@
 package com.view;
 
 
-
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
@@ -13,33 +12,25 @@ import java.util.logging.Logger;
 
 public class ClientPanel extends JPanel {
 
+    public JButton buttonExit = new JButton();
+    public JButton buttonSend = new JButton();
+    public JLabel jLabel1 = new JLabel();
+    public JLabel jLabel2 = new JLabel();
+    public JLabel jLabel4 = new JLabel();
+    public JScrollPane jScrollPane2 = new JScrollPane();
+    public JScrollPane jScrollPane3 = new JScrollPane();
+    public JScrollPane jScrollPane4 = new JScrollPane();
+    public JScrollPane jScrollPane5 = new JScrollPane();
+    public JLabel lbRoom = new JLabel();
+    public JList<String> onlineList = new JList<>();
+    public JList<String> onlineListThisRoom = new JList<>();
+    public JTextArea taInput = new JTextArea();
+    public JTextPane tpMessage = new JTextPane();
     JFileChooser chooser;
-
-    private JButton buttonExit;
-    private JButton buttonSend;
-    private JLabel jLabel1;
-    private JLabel jLabel2;
-    private JLabel jLabel4;
-    private JScrollPane jScrollPane2;
-    private JScrollPane jScrollPane3;
-    private JScrollPane jScrollPane4;
-    private JScrollPane jScrollPane5;
-    private JLabel lbCry;
-    private JLabel lbDislike;
-    private JLabel lbGrin;
-    private JLabel lbLike;
-    private JLabel lbPacman;
-    private JLabel lbRoom;
-    private JLabel lbSmile;
-    private JList<String> onlineList;
-    private JList<String> onlineListThisRoom;
-    private JTextArea taInput;
-    private JTextPane tpMessage;
 
     public ClientPanel() {
         initComponents();
         chooser = new JFileChooser();
-
     }
 
     public JButton getButtonExit() {
@@ -126,35 +117,15 @@ public class ClientPanel extends JPanel {
 
     private void initComponents() {
 
-        jLabel1 = new JLabel();
-        buttonExit = new JButton();
-        buttonSend = new JButton();
-        jScrollPane3 = new JScrollPane();
-        taInput = new JTextArea();
-        jLabel2 = new JLabel();
-        jScrollPane4 = new JScrollPane();
-        onlineList = new JList<>();
-        jScrollPane2 = new JScrollPane();
-        tpMessage = new JTextPane();
-        lbRoom = new JLabel();
-        jLabel4 = new JLabel();
-        jScrollPane5 = new JScrollPane();
-        onlineListThisRoom = new JList<>();
-        lbLike = new JLabel();
-        lbDislike = new JLabel();
-        lbPacman = new JLabel();
-        lbSmile = new JLabel();
-        lbGrin = new JLabel();
-        lbCry = new JLabel();
 
-        jLabel1.setFont(new Font("Arial", 0, 14)); // NOI18N
+        jLabel1.setFont(new Font("Arial", 0, 14));
         jLabel1.setText("Online");
 
-        buttonExit.setFont(new Font("Arial", 1, 16)); // NOI18N
+        buttonExit.setFont(new Font("Arial", 1, 16));
         buttonExit.setForeground(new Color(255, 102, 102));
         buttonExit.setText("Exit");
 
-        buttonSend.setFont(new Font("Arial", 1, 18)); // NOI18N
+        buttonSend.setFont(new Font("Arial", 1, 18));
         buttonSend.setForeground(new Color(102, 102, 255));
         buttonSend.setText("Send");
 
@@ -162,25 +133,25 @@ public class ClientPanel extends JPanel {
         taInput.setRows(5);
         jScrollPane3.setViewportView(taInput);
 
-        jLabel2.setFont(new Font("Arial", 0, 14)); // NOI18N
+        jLabel2.setFont(new Font("Arial", 0, 14));
         jLabel2.setText("Chat");
 
-        onlineList.setFont(new Font("Arial", 0, 14)); // NOI18N
+        onlineList.setFont(new Font("Arial", 0, 14));
         onlineList.setForeground(new Color(51, 51, 255));
         jScrollPane4.setViewportView(onlineList);
 
         tpMessage.setEditable(false);
-        tpMessage.setFont(new Font("Arial", 0, 14)); // NOI18N
+        tpMessage.setFont(new Font("Arial", 0, 14));
         jScrollPane2.setViewportView(tpMessage);
 
-        lbRoom.setFont(new Font("Arial", 0, 18)); // NOI18N
+        lbRoom.setFont(new Font("Arial", 0, 18));
         lbRoom.setForeground(new Color(0, 0, 255));
         lbRoom.setText("Room ?");
 
-        jLabel4.setFont(new Font("Arial", 0, 14)); // NOI18N
+        jLabel4.setFont(new Font("Arial", 0, 14));
         jLabel4.setText("Online in this room");
 
-        onlineListThisRoom.setFont(new Font("Arial", 0, 14)); // NOI18N
+        onlineListThisRoom.setFont(new Font("Arial", 0, 14));
         onlineListThisRoom.setForeground(new Color(51, 51, 255));
         jScrollPane5.setViewportView(onlineListThisRoom);
 
@@ -199,18 +170,6 @@ public class ClientPanel extends JPanel {
                                                 .addComponent(jScrollPane2)
                                                 .addGroup(layout.createSequentialGroup()
                                                         .addComponent(buttonSend)
-                                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(lbLike)
-                                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(lbDislike)
-                                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(lbPacman)
-                                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(lbSmile)
-                                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(lbGrin)
-                                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(lbCry)
                                                         .addGap(0, 0, Short.MAX_VALUE))
                                                 .addComponent(jScrollPane3)))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
@@ -254,17 +213,11 @@ public class ClientPanel extends JPanel {
                                 .addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(lbGrin, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(buttonExit, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lbLike, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lbDislike, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lbPacman, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lbSmile, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lbCry, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(buttonSend, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
-        lbLike.getAccessibleContext().setAccessibleDescription("");
+
     }
 }
