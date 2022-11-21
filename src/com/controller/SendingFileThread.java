@@ -13,25 +13,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-/**
- *
- * @author AnhTu
- */
 
 public class SendingFileThread extends Thread {
 
-    String sender, receiver;
-    String filePath;
-    Socket socketOfSender;
-    BufferedWriter bw;
-    BufferedReader br;
-    JProgressBar progressBar;
-    SendFileFrame frameToDisplayDialog;
-
-    private final int BUFFER_SIZE = 1024;
+    public String sender;
+    public String receiver;
+    public String filePath;
+    public Socket socketOfSender;
+    public BufferedWriter bufferedWriter;
+    public BufferedReader bufferedReader;
+    public JProgressBar progressBar;
+    public SendFileFrame frameToDisplayDialog;
 
     public SendingFileThread(String sender, String receiver, String filePath, Socket socket, SendFileFrame frameToDisplayDialog, JProgressBar progressBar) {
         this.sender = sender;
@@ -42,68 +34,55 @@ public class SendingFileThread extends Thread {
         this.progressBar = progressBar;
 
         try {
-            bw = new BufferedWriter(new OutputStreamWriter(socketOfSender.getOutputStream()));
-            br = new BufferedReader(new InputStreamReader(socketOfSender.getInputStream()));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(socketOfSender.getOutputStream()));
+            bufferedReader = new BufferedReader(new InputStreamReader(socketOfSender.getInputStream()));
         } catch (IOException ex) {
-            Logger.getLogger(SendingFileThread.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
 
     public void sendToServer(String line) {
         try {
-            this.bw.write(line);
-            this.bw.newLine();   //phải có newLine thì mới dùng đc hàm readLine()
-            this.bw.flush();
+            this.bufferedWriter.write(line);
+            this.bufferedWriter.newLine();
+            this.bufferedWriter.flush();
         } catch (java.net.SocketException e) {
             JOptionPane.showMessageDialog(null, "Server is close, can't send message!", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
-            Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
 
     @Override
     public void run() {
-        FileInputStream fis = null;
-        BufferedOutputStream bos = null;
+        FileInputStream fileInputStream = null;
+        BufferedOutputStream bufferedOutputStream = null;
         try {
-            File file = new File(filePath);     //we need to send this file to server, and then server will deliver this file to the receiver
-            int leng = (int) file.length();     //ví dụ: leng = 4979 byte
+            File file = new File(filePath);
+            this.sendToServer(ServerCommands.SEND_FILE_TO_SERVER+"|"+sender+"|"+receiver+"|"+file.getName()+"|"+(int) file.length());
+            fileInputStream = new FileInputStream(file);
+            bufferedOutputStream = new BufferedOutputStream(socketOfSender.getOutputStream());
 
-            this.sendToServer(ServerCommands.SEND_FILE_TO_SERVER+"|"+sender+"|"+receiver+"|"+file.getName()+"|"+leng);
-
-            fis = new FileInputStream(file);
-            bos = new BufferedOutputStream(socketOfSender.getOutputStream());
-
-            byte []buffer = new byte[BUFFER_SIZE];
-            int count=0, percent=0;
-            while((count = fis.read(buffer)) > 0) {
-                //percent = percent + count;
-                bos.write(buffer, 0, count);    //liên tục gửi từng phần của file tới server
-                //progressBar.setValue(percent/leng);
+            byte []buffer = new byte[1024];
+            int count=0;
+            while((count = fileInputStream.read(buffer)) > 0) {
+                bufferedOutputStream.write(buffer, 0, count);
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(SendingFileThread.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         } finally {
             try {
-                if(fis != null) fis.close();
-                if(bos != null) bos.close();
+                if(fileInputStream != null) fileInputStream.close();
+                if(bufferedOutputStream != null) bufferedOutputStream.close();
                 socketOfSender.close();
             } catch (IOException ex) {
-                Logger.getLogger(SendingFileThread.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
         }
-        JOptionPane.showMessageDialog(frameToDisplayDialog, "File successfully sent!", "Sucess", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(frameToDisplayDialog, "File successfully sent!", "Notice!", JOptionPane.INFORMATION_MESSAGE);
     }
 
 }
-
-/*
-giả sử file có kích thước 1000byte
-số lần cần gửi là timeSend = 1000/BUFFER_SIZE = 10 lần
-count là biến đếm số byte mỗi lần gửi, do đó trừ lần cuốn cùng thì count = 100
-sau mỗi lần gửi thì percent = percent + count;
-giả sử tại lần 4, percent = 400 byte
-*/

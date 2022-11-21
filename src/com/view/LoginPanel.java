@@ -7,13 +7,13 @@ import java.awt.*;
 public class LoginPanel extends JPanel {
 
 
-    private JButton btOK;
-    private JLabel jLabel1;
-    private JLabel jLabel2;
-    private JLabel jLabel3;
-    private JLabel lbBack_login;
-    private JTextField tfHost;
-    private JTextField tfNickname;
+    public JButton btOK = new JButton();
+    public JLabel jLabel1 = new JLabel();
+    public JLabel jLabel2 = new JLabel();
+    public JLabel jLabel3 = new JLabel();
+    public JLabel lbBackLogin = new JLabel();
+    public JTextField tfHost = new JTextField();
+    public JTextField tfNickname = new JTextField();
 
 
     public LoginPanel() {
@@ -32,20 +32,12 @@ public class LoginPanel extends JPanel {
         return tfNickname;
     }
 
-    public JLabel getLbBack_login() {
-        return lbBack_login;
+    public JLabel getLbBackLogin() {
+        return lbBackLogin;
     }
 
     @SuppressWarnings("unchecked")
     private void initComponents() {
-
-        jLabel1 = new JLabel();
-        jLabel2 = new JLabel();
-        tfNickname = new JTextField();
-        jLabel3 = new JLabel();
-        tfHost = new JTextField();
-        btOK = new JButton();
-        lbBack_login = new JLabel();
 
         jLabel1.setFont(new Font("Arial", 1, 36));
         jLabel1.setText("Login");
@@ -67,7 +59,7 @@ public class LoginPanel extends JPanel {
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(lbBack_login)
+                                .addComponent(lbBackLogin)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel1)
                                 .addGap(214, 214, 214))
@@ -92,7 +84,7 @@ public class LoginPanel extends JPanel {
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addContainerGap()
-                                                .addComponent(lbBack_login))
+                                                .addComponent(lbBackLogin))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(30, 30, 30)
                                                 .addComponent(jLabel1)))

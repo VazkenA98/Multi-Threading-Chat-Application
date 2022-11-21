@@ -1,7 +1,7 @@
 package com.model;
 
 public class User {
-    String name;
+    private String name;
     private String room;
 
     public User(String name) {
@@ -14,6 +14,14 @@ public class User {
 
     public void setRoom(String room) {
         this.room = room;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }
